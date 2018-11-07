@@ -41,6 +41,7 @@ gem 'bootstrap', '~> 4.1.3'
 gem "haml-rails", "~> 1.0"
 gem 'devise'
 gem 'devise-bootstrap-views', '~> 1.0'
+gem "twitter-bootstrap-rails"
 
 
 
