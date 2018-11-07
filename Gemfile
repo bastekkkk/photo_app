@@ -42,6 +42,7 @@ gem "haml-rails", "~> 1.0"
 gem 'devise'
 gem 'devise-bootstrap-views', '~> 1.0'
 gem "twitter-bootstrap-rails"
+gem "font-awesome-rails"
 
 
 
