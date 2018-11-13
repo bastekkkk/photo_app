@@ -1,17 +1,15 @@
-class RegistrationController < Devise::RegistrationController
-
+class RegistrationsController < Devise::RegistrationsController
   def create
-    build_resources(sing_up_params)
+    build_resource(sign_up_params)
 
     resource.class.transaction do
       resource.save
       yield resource if block_given?
       if resource.persisted?
-        @payment = Payment.new({email: params["user"]["email"],
-                                token: params[:payment]["token"],
-                                user_id: resource.id})
+        @payment = Payment.new({ email: params["user"]["email"],
+          token: params[:payment]["token"], user_id: resource.id })
 
-        flash[:error] = "please check registration" unless @payment.valid?
+        flash[:error] = "Please check registration errors" unless @payment.valid?
 
         begin
           @payment.process_payment
@@ -20,33 +18,30 @@ class RegistrationController < Devise::RegistrationController
           flash[:error] = e.message
 
           resource.destroy
-          puts "Payment failed"
+          puts 'Payment failed'
           render :new and return
         end
 
-         if resource.active_for_authentication?
-          set_flash_message! :notice, :signed_up
+        if resource.active_for_authentication?
+          set_flash_message :notice, :signed_up if is_flashing_format?
           sign_up(resource_name, resource)
           respond_with resource, location: after_sign_up_path_for(resource)
         else
-          set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+          set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
           expire_data_after_sign_in!
           respond_with resource, location: after_inactive_sign_up_path_for(resource)
-         end
+        end
       else
         clean_up_passwords resource
         set_minimum_password_length
         respond_with resource
-    end
-
+      end
     end
   end
 
   protected
 
   def configure_permitted_parameters
-    devise_parameter_senitizer.for(:sign_up).push(:payment)
+    devise_parameter_sanitizer.for(:sign_up).push(:payment)
   end
-
-
 end
