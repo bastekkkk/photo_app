@@ -13,5 +13,6 @@
 //= require rails-ujs
 //= require jquery
 //= require twitter/bootstrap
+//= require credit_card_form
 //= require turbolinks
 //= require_tree .

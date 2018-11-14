@@ -1,7 +1,5 @@
-%script{language: "Javascript"}
+:javascript
   Stripe.setPublishableKey("#{ENV['STRIPE_TEST_PUBLISHABLE_KEY']}");
-
-
 .container{style: "margin-top: 25px;"}
   %h1= t('.sign_up')
   = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {role: "form", class: 'cc_form'}) do |f|
@@ -29,9 +27,11 @@
           .col-md-12
             = p.label :card_expires, "Card expires", data: {stripe: "label"}
           .col-md-3
-            =p.select :card_expires_month, options_for_select(Payment.month_options), {include_bank: 'Month'}, "data=stripe" => "exp-month", class: "form-control", require: true
+            =p.select :card_expires_month, options_for_select(Payment.month_options), {include_bank: 'Month'}, data: {stripe: "exp-month"}, class: "form-control", require: true
           .col-md-3
             =p.select :card_expires_year, options_for_select(Payment.year_options.push), {include_bank: 'Year'},data: {stripe: "exp-year"}, class: "form-control", require: true
     .form-group
       = f.submit t('.sign_up'), class: 'btn btn-primary'
   = render 'devise/shared/links'
+
+

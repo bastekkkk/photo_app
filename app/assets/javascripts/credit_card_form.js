@@ -1,4 +1,6 @@
 $(document).on('ready turbolinks:load', function(){
+  Stripe.setPublishableKey("pk_test_4i6jFjP64cr3OED4sfjjUhle");
+
 
   var show_error;
   var stripeResponseHandler;
@@ -6,7 +8,7 @@ $(document).on('ready turbolinks:load', function(){
 
   submitHandler = function (event) {
 
-    var #form = $(event.target);
+    var $form = $(event.target);
     $form.find("input[type=submit]").prop("disabled", true);
 
     if (Stripe){
@@ -25,7 +27,6 @@ $(document).on('ready turbolinks:load', function(){
   stripeResponseHandler = function(status, response) {
        var token;
        var $form = $(".cc_form");
-
        if(response.error){
         console.log(response.error.message);
         show_error(response.error.message);
@@ -46,7 +47,7 @@ $(document).on('ready turbolinks:load', function(){
     show_error = function (message) {
 
       if($("#flash-messages").size() < 1){
-        ('div.container.main div:first').prepend("<div id='flash-messages'></div>")
+        ('div.container.main div:first').prepend($("<div id='flash-messages'></div>"))
       }
       $("#flash-messages").html('<div class="alert alert-warning"><a class="close" data-dismiss="alert">×</a><div id="flash_alert">' + message + '</div></div>');
       $('.alert').delay(5000).fadeOut(3000);
